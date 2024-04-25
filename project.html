@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cooking Tools</title>
+<link href="D:\Project\css.css" rel="stylesheet"/>
+</head>
+<body>
+
+	  
+	<input type="text" id="searchText" class="button" placeholder="Search..." onkeypress="handleKeyPress(event)">
+<!-- <button onclick="searchAndHighlight()"></button> -->
+
+<script>
+// Function to search and highlight text
+function searchAndHighlight() {
+  // Clear previous highlights
+  var oldHighlights = document.querySelectorAll('.highlight');
+  oldHighlights.forEach(function(node) {
+    node.outerHTML = node.innerHTML; // Replace the highlight wrapper with its content only
+  });
+
+  // Get the search text
+  var searchText = document.getElementById('searchText').value;
+  if (searchText) {
+    // Create a regular expression for whole words only, escaping special characters
+    var regExp = new RegExp('\\b' + searchText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\b', 'gi');
+    var firstMatch = null; // Variable to store the first match element
+
+    // Recursive function to search and highlight text nodes
+    function searchNodes(node) {
+      if (node.nodeType === 3) { // Text node
+        var match = node.nodeValue.match(regExp);
+        if (match) {
+          var span = document.createElement('span');
+          span.className = 'highlight';
+          span.innerHTML = node.nodeValue.replace(regExp, '<span class="highlight">$&</span>');
+
+          // Replace the text node with the new span element
+          node.parentNode.replaceChild(span, node);
+
+          // If firstMatch is null, set it to the first highlighted element
+          if (!firstMatch) {
+            firstMatch = span.querySelector('.highlight');
+          }
+        }
+      } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') { // Element node, ignore SCRIPT/STYLE
+        Array.from(node.childNodes).forEach(searchNodes);
+      }
+    }
+
+    // Start the search from the body of the page
+    searchNodes(document.body);
+
+    // Scroll to the first match
+    if (firstMatch) {
+      firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      alert('No matches found.');
+    }
+  }
+}
+
+// Function to handle the Enter key press
+function handleKeyPress(event) {
+  var key = event.key || event.keyCode;
+  if (key === 'Enter' || key === 13) {
+    searchAndHighlight(); // Call the search function
+  }
+}
+</script>
+	<h1> Cooking Tools </h1>
+	<div class="container">
+		<div class="tool">
+			<img src="D:\Project\knife.jpeg" alt="Chef Knife">
+			<h2>Chef Knife</h2>
+			<p>A must-have tool for every kitchen.</p>
+		</div>
+		<div class="tool">
+			<img src="D:\Project\Cutting board.jpeg" alt="Cutting Board">
+			<h2>Cutting Board</h2>
+			<p>A durable and safe surface for chopping and cutting.</p>
+		</div>
+		<div class="tool">
+			<img src="D:\Project\frying pan.jpeg" alt="Frying Pan">
+			<h2>Frying Pan</h2>
+			<p>A versatile tool for cooking a variety of dishes.</p>
+		</div>
+    <div class="tool">
+			<img src="D:\Project\ladle.jpeg" alt="Ladle">
+			<h2>Ladle</h2>
+			<p>It's a tool primarily used for serving and transferring liquids, such as soups and sauces.</p>
+		</div>
+		<div class="tool">
+			<img src="D:\Project\saucepan.jpeg" alt="Saucepan"> 
+			<h2>Saucepan</h2>
+			<p>It is used for cooking liquidy foods, like chili or soup.</p>
+		</div>
+    <div class="tool">
+			<img src="D:\Project\mircoplanee.jpeg" alt="MircoPlane"> 
+			<h2>MircoPlane</h2>
+			<p>It's a tool for finely grating or zesting a variety of foods.</p>
+		</div>
+		<footer class="footer">
+			<p>Author: David Dawoud</p>
+			<p>
+			  <a href="https://www.facebook.com/davidawoudd/">FaceBook</a> |
+			  <a href="https://www.facebook.com/groups/340398917711992/?__tn__=%3C">Programming</a> |
+			  <a href="https://www.facebook.com/Pythontutorial4u?__tn__=%3C">Python programming</a>
+			</p>
+		  </footer>
+	</body>
